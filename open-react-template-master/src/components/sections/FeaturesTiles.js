@@ -145,9 +145,6 @@ const FeaturesTiles = ({
                 </div>
               </div>
             </div>
-
-
-
           </div>
         </div>
       </div>
