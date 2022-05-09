@@ -41,10 +41,22 @@
     display: flex;
 }
 
+.input-box-container label input {
+    margin-left: 20px;
+}
+
 .second-view {
     display: none;
 }
 
 .third-view {
+    display: none;
+}
+
+.fourth-view {
+    display: none;
+}
+
+.fifth-view {
     display: none;
 }

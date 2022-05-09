@@ -18,6 +18,24 @@ function stepThree() {
   document.querySelector('.third-view').style.display = 'block'
   setSubtitle('NFT Data')
   console.log(experience)
+  // Post NFT Image
+}
+
+async function stepFour() {
+  document.querySelector('.third-view').style.display = 'none'
+  document.querySelector('.fourth-view').style.display = 'block'
+  setSubtitle('Digital Assets')
+  // Post NFT Image
+}
+
+function stepFive() {
+  document.querySelector('.fourth-view').style.display = 'none'
+  document.querySelector('.fifth-view').style.display = 'block'
+  setSubtitle('')
+}
+
+function deployContract() {
+  console.log('deploying!')
 }
 
   return (
@@ -46,6 +64,31 @@ function stepThree() {
                   <input type="file" />
               </label>
           </div>
+          <div><button onClick={stepFour} className="app-container__button">Continue</button></div>
+        </div>
+        <div className="app-container__main-body fourth-view">
+          <div className="input-box-container">
+            <label>
+               3D Digital Object
+              <input type="file" />
+            </label>
+            <label>
+               2D Digital Object
+              <input type="file" />
+            </label>
+            <label>
+               MP4 Video File
+              <input type="file" />
+            </label>
+            <label>
+               Sound File
+              <input type="file" />
+            </label>
+          </div>
+          <div><button onClick={stepFive} className="app-container__button">Continue</button></div>
+        </div>
+        <div className="app-container__main-body fifth-view">
+            <div><button onClick={deployContract} className="app-container__button">Deploy NFT Smart Contract</button></div>
         </div>
     </div>
     </>
