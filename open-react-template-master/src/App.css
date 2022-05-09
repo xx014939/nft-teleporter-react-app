@@ -29,6 +29,18 @@
     border: 1px solid #ffffff;
 }
 
+.input-box-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.input-box-container label {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+}
+
 .second-view {
     display: none;
 }

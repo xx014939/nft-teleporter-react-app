@@ -36,7 +36,16 @@ function stepThree() {
             <div><button onClick={stepThree} className="app-container__button">Continue</button></div>
         </div>
         <div className="app-container__main-body third-view">
-            <input/>
+          <div className="input-box-container">
+            <label>
+                NFT/Collection Name
+                  <input type="text" />
+              </label>
+              <label>
+                NFT/Collection Image
+                  <input type="file" />
+              </label>
+          </div>
         </div>
     </div>
     </>
