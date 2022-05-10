@@ -9,29 +9,31 @@ import {
 	CustomFixedFee,
 	Hbar,
 	TokenSupplyType,
-	TokenMintTransaction,
-	TokenBurnTransaction,
-	TransferTransaction,
-	AccountBalanceQuery,
-	AccountUpdateTransaction,
-	TokenAssociateTransaction, } from "@hashgraph/sdk";
+	TokenMintTransaction,} from "@hashgraph/sdk";
 
 
-// Configure accounts and client, and generate needed keys
-const operatorId = AccountId.fromString(process.env.OPERATOR_ID);
-const operatorKey = PrivateKey.fromString(process.env.OPERATOR_PVKEY);
-const treasuryId = AccountId.fromString(process.env.OPERATOR_ID);
-const treasuryKey = PrivateKey.fromString(process.env.OPERATOR_PVKEY);
-
-const client = Client.forTestnet().setOperator(operatorId, operatorKey);
-
-const supplyKey = PrivateKey.generate();
-const adminKey = PrivateKey.generate();
-const pauseKey = PrivateKey.generate();
-const freezeKey = PrivateKey.generate();
-const wipeKey = PrivateKey.generate();
 
 async function main() {
+    // Configure accounts and client, and generate needed keys
+    const operatorId = AccountId.fromString(document.getElementById('accountId').value)
+    const operatorKey = PrivateKey.fromString(document.getElementById('accountPrivateKey').value)
+
+    const treasuryId = AccountId.fromString(document.getElementById('accountId').value)
+    const treasuryKey = PrivateKey.fromString(document.getElementById('accountPrivateKey').value)
+
+    // Retrieve NFT name & Metadata
+    const collectionName = document.getElementById('collectionName').value
+    const tokenSymbol = document.getElementById('tokenSymbol').value
+
+
+    const client = Client.forTestnet().setOperator(operatorId, operatorKey);
+    console.log('client here -->', client)
+
+    const supplyKey = PrivateKey.generate();
+    const adminKey = PrivateKey.generate();
+    const freezeKey = PrivateKey.generate();
+    const wipeKey = PrivateKey.generate();
+
 	// DEFINE CUSTOM FEE SCHEDULE
 	let nftCustomFee = await new CustomRoyaltyFee()
 		.setNumerator(5)
@@ -40,7 +42,7 @@ async function main() {
 		.setFallbackFee(new CustomFixedFee().setHbarAmount(new Hbar(200)));
 
 	// IPFS CONTENT IDENTIFIERS FOR WHICH WE WILL CREATE NFTs
-	CID = [
+	let CID = [
 		"QmNPCiNA3Dsu3K5FxDPMG5Q3fZRwVTg14EXA92uqEeSRXn",
 		"QmZ4dgAgt8owvnULxnKxNe8YqpavtVCXmc1Lt2XajFpJs9",
 		"QmPzY5GxevjyfMUF5vEAjtyRoigzWp47MiKAtLBduLMC1T",
@@ -50,8 +52,8 @@ async function main() {
 
 	// CREATE NFT WITH CUSTOM FEE
 	let nftCreate = await new TokenCreateTransaction()
-		.setTokenName("Fall Collection 3")
-		.setTokenSymbol("LEAF")
+		.setTokenName(`${collectionName}`)
+		.setTokenSymbol(`${tokenSymbol}`)
 		.setTokenType(TokenType.NonFungibleUnique)
 		.setDecimals(0)
 		.setInitialSupply(0)
@@ -78,95 +80,17 @@ async function main() {
 	console.table(tokenInfo.customFees[0]);
 
 	// MINT NEW BATCH OF NFTs
-	nftLeaf = [];
+	let nftLeaf = [];
 	for (var i = 0; i < CID.length; i++) {
 		nftLeaf[i] = await tokenMinterFcn(CID[i]);
 		console.log(`Created NFT ${tokenId} with serial: ${nftLeaf[i].serials[0].low}`);
 	}
 
-	// // BURN THE LAST NFT IN THE COLLECTION
-	// let tokenBurnTx = await new TokenBurnTransaction()
-	// 	.setTokenId(tokenId)
-	// 	.setSerials([CID.length])
-	// 	.freezeWith(client)
-	// 	.sign(supplyKey);
-	// let tokenBurnSubmit = await tokenBurnTx.execute(client);
-	// let tokenBurnRx = await tokenBurnSubmit.getReceipt(client);
-	// console.log(`\nBurn NFT with serial ${CID.length}: ${tokenBurnRx.status} \n`);
-
-	// var tokenInfo = await new TokenInfoQuery().setTokenId(tokenId).execute(client);
-	// console.log(`Current NFT supply: ${tokenInfo.totalSupply} \n`);
-
-	// // AUTO-ASSOCIATION FOR ALICE'S ACCOUNT
-	// let associateTx = await new AccountUpdateTransaction()
-	// 	.setAccountId(aliceId)
-	// 	.setMaxAutomaticTokenAssociations(100)
-	// 	.freezeWith(client)
-	// 	.sign(aliceKey);
-	// let associateTxSubmit = await associateTx.execute(client);
-	// let associateRx = await associateTxSubmit.getReceipt(client);
-	// console.log(`Alice NFT Auto-Association: ${associateRx.status} \n`);
-
-	// // MANUAL ASSOCIATION FOR BOB'S ACCOUNT
-	// let associateBobTx = await new TokenAssociateTransaction()
-	// 	.setAccountId(bobId)
-	// 	.setTokenIds([tokenId])
-	// 	.freezeWith(client)
-	// 	.sign(bobKey);
-	// let associateBobTxSubmit = await associateBobTx.execute(client);
-	// let associateBobRx = await associateBobTxSubmit.getReceipt(client);
-	// console.log(`Bob NFT Manual Association: ${associateBobRx.status} \n`);
-
-	// // BALANCE CHECK 1
-	// oB = await bCheckerFcn(treasuryId);
-	// aB = await bCheckerFcn(aliceId);
-	// bB = await bCheckerFcn(bobId);
-	// console.log(`- Treasury balance: ${oB[0]} NFTs of ID:${tokenId} and ${oB[1]}`);
-	// console.log(`- Alice balance: ${aB[0]} NFTs of ID:${tokenId} and ${aB[1]}`);
-	// console.log(`- Bob balance: ${bB[0]} NFTs of ID:${tokenId} and ${bB[1]}`);
-
-	// // 1st TRANSFER NFT Treasury->Alice
-	// let tokenTransferTx = await new TransferTransaction()
-	// 	.addNftTransfer(tokenId, 2, treasuryId, aliceId)
-	// 	.freezeWith(client)
-	// 	.sign(treasuryKey);
-	// let tokenTransferSubmit = await tokenTransferTx.execute(client);
-	// let tokenTransferRx = await tokenTransferSubmit.getReceipt(client);
-	// console.log(`\n NFT transfer Treasury->Alice status: ${tokenTransferRx.status} \n`);
-
-	// // BALANCE CHECK 2
-	// oB = await bCheckerFcn(treasuryId);
-	// aB = await bCheckerFcn(aliceId);
-	// bB = await bCheckerFcn(bobId);
-	// console.log(`- Treasury balance: ${oB[0]} NFTs of ID:${tokenId} and ${oB[1]}`);
-	// console.log(`- Alice balance: ${aB[0]} NFTs of ID:${tokenId} and ${aB[1]}`);
-	// console.log(`- Bob balance: ${bB[0]} NFTs of ID:${tokenId} and ${bB[1]}`);
-
-	// // 2nd NFT TRANSFER NFT Alice->Bob
-	// let tokenTransferTx2 = await new TransferTransaction()
-	// 	.addNftTransfer(tokenId, 2, aliceId, bobId)
-	// 	.addHbarTransfer(aliceId, 100)
-	// 	.addHbarTransfer(bobId, -100)
-	// 	.freezeWith(client)
-	// 	.sign(aliceKey);
-	// tokenTransferTx2Sign = await tokenTransferTx2.sign(bobKey);
-	// let tokenTransferSubmit2 = await tokenTransferTx2Sign.execute(client);
-	// let tokenTransferRx2 = await tokenTransferSubmit2.getReceipt(client);
-	// console.log(`\n NFT transfer Alice->Bob status: ${tokenTransferRx2.status} \n`);
-
-	// // BALANCE CHECK 3
-	// oB = await bCheckerFcn(treasuryId);
-	// aB = await bCheckerFcn(aliceId);
-	// bB = await bCheckerFcn(bobId);
-	// console.log(`- Treasury balance: ${oB[0]} NFTs of ID:${tokenId} and ${oB[1]}`);
-	// console.log(`- Alice balance: ${aB[0]} NFTs of ID:${tokenId} and ${aB[1]}`);
-	// console.log(`- Bob balance: ${bB[0]} NFTs of ID:${tokenId} and ${bB[1]}`);
-
 	// TOKEN MINTER FUNCTION ==========================================
 	async function tokenMinterFcn(CID) {
-		mintTx = await new TokenMintTransaction()
+		let mintTx = await new TokenMintTransaction()
 			.setTokenId(tokenId)
-			.setMetadata([Buffer.from(CID)])
+			.setMetadata([CID])
 			.freezeWith(client);
 		let mintTxSign = await mintTx.sign(supplyKey);
 		let mintTxSubmit = await mintTxSign.execute(client);
@@ -175,17 +99,38 @@ async function main() {
 	}
 
 	// BALANCE CHECKER FUNCTION ==========================================
-	async function bCheckerFcn(id) {
-		balanceCheckTx = await new AccountBalanceQuery().setAccountId(id).execute(client);
-		return [balanceCheckTx.tokens._map.get(tokenId.toString()), balanceCheckTx.hbars];
-	}
+	// async function bCheckerFcn(id) {
+	// 	let balanceCheckTx = await new AccountBalanceQuery().setAccountId(id).execute(client);
+	// 	return [balanceCheckTx.tokens._map.get(tokenId.toString()), balanceCheckTx.hbars];
+	// }
+
+    console.log('SUCCESS!!!')
 }
 
 function NFTContract() {
     return (
         <>
-            <input/>
-            <button onClick={main}></button>
+        <div>
+            <div>
+                <label>
+                    Account ID: 
+                    <input id="accountId" type="text" name="accountId" />
+                </label>
+                <label>
+                    Account Private Key (We don't save this): 
+                    <input id="accountPrivateKey" type="text" name="accountPrivate" />
+                </label>
+                <label>
+                    Collection Name: 
+                    <input id="collectionName" type="text" name="collectionName" />
+                </label>
+                <label>
+                    Token Symbol: 
+                    <input id="tokenSymbol" type="text" name="tokenSymbol" />
+                </label>
+            </div>
+            <button onClick={main}>CONTINUE</button>
+        </div>
         </>
     )
 }

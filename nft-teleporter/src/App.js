@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import HederaContract from './components/HederaContract'; 
+import NFTContract from './components/NFTContract';
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
         <p>
           SOMETHING HERE
         </p>
-        <HederaContract/>
+        <NFTContract/>
       </header>
     </div>
   );
