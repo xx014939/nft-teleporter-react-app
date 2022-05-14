@@ -10,7 +10,9 @@ CustomRoyaltyFee,
 CustomFixedFee,
 Hbar,
 TokenSupplyType,
-TokenMintTransaction,} from "@hashgraph/sdk";
+TokenMintTransaction} from "@hashgraph/sdk";
+
+var enc = new TextEncoder();
 
 async function mintNFT() {
   // Configure accounts and client, and generate needed keys
@@ -42,11 +44,7 @@ let nftCustomFee = await new CustomRoyaltyFee()
 
 // IPFS CONTENT IDENTIFIERS FOR WHICH WE WILL CREATE NFTs
 let CID = [
-  "QmNPCiNA3Dsu3K5FxDPMG5Q3fZRwVTg14EXA92uqEeSRXn",
-  "QmZ4dgAgt8owvnULxnKxNe8YqpavtVCXmc1Lt2XajFpJs9",
-  "QmPzY5GxevjyfMUF5vEAjtyRoigzWp47MiKAtLBduLMC1T",
-  "Qmd3kGgSrAwwSrhesYcY7K54f3qD7MDo38r7Po2dChtQx5",
-  "QmWgkKz3ozgqtnvbCLeh7EaR1H8u5Sshx3ZJzxkcrT3jbw",
+  'https://ipfs.io/ipfs/QmVjNokZofAaUtKDb8SjyY2RwYy4WtLzLLKXiLmmeFWgqF?filename=tree.png'
 ];
 
 // CREATE NFT WITH CUSTOM FEE
@@ -89,7 +87,7 @@ for (var i = 0; i < CID.length; i++) {
 async function tokenMinterFcn(CID) {
   let mintTx = await new TokenMintTransaction()
     .setTokenId(tokenId)
-    .setMetadata([CID])
+    .setMetadata([Buffer.from(CID)])
     .freezeWith(client);
   let mintTxSign = await mintTx.sign(supplyKey);
   let mintTxSubmit = await mintTxSign.execute(client);

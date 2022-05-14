@@ -4,14 +4,16 @@
   "private": true,
   "dependencies": {
     "@hashgraph/sdk": "^2.13.1",
+    "@react-three/fiber": "^8.0.15",
     "classnames": "^2.2.6",
     "lodash": "^4.17.15",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-ga": "^2.7.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
-    "sass": "^1.49.7"
+    "sass": "^1.49.7",
+    "three": "^0.140.2"
   },
   "repository": {
     "type": "git",
