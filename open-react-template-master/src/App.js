@@ -9,6 +9,9 @@ import ReactDOM from "react-dom";
 // Layouts
 import LayoutDefault from './layouts/LayoutDefault';
 
+// Upload Files
+import UploadIPFS from './components/files/UploadIPFS'
+
 // Views 
 import Home from './views/Home';
 import AppPortal from './views/AppPortal';
@@ -46,6 +49,7 @@ const App = () => {
           <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
           <AppRoute exact path="/app" component={AppPortal} layout={LayoutDefault} />
           <AppRoute exact path="/experiences" component={Box} layout={LayoutDefault} />
+          <AppRoute exact path="/upload" component={UploadIPFS} layout={LayoutDefault} />
         </Switch>
       )} />
   );

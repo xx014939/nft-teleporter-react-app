@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import UploadIPFS from '../files/UploadIPFS';
 import { 	
   AccountId,
 PrivateKey,
@@ -107,6 +109,8 @@ const [subtitle, setSubtitle] = useState('Choose')
 const [collection, setCollection] = useState('false');
 let experience = [];
 
+
+// Currently not in use - hence we go straight from step one to step three
 function stepTwo() {
   document.querySelector('.first-view').style.display = 'none'
   document.querySelector('.second-view').style.display = 'block'
@@ -114,6 +118,7 @@ function stepTwo() {
 }
 
 function stepThree() {
+  document.querySelector('.first-view').style.display = 'none'
   document.querySelector('.second-view').style.display = 'none'
   document.querySelector('.third-view').style.display = 'block'
   setSubtitle('NFT Data')
@@ -130,10 +135,23 @@ async function stepFour() {
   const nftImage = ''
 }
 
-function stepFive() {
+async function stepFive() {
   document.querySelector('.fourth-view').style.display = 'none'
   document.querySelector('.fifth-view').style.display = 'block'
   setSubtitle('')
+
+  const ipfsURLS = document.querySelectorAll('.ipfs-url')
+  axios.post(`https://warm-journey-29417.herokuapp.com/nfts`, {
+    "walletAddress": `${document.getElementById('collectionName').value}`,
+    "ipfsImageLinks": [`${ipfsURLS[1]}`],
+    "ipfsModelLinks": [`${ipfsURLS[0]}`],
+    "ipfsVideoLinks": [`${ipfsURLS[2]}`]
+})
+.then(res => {
+  console.log('The response is -->',res)
+  console.log('The ID is -->', res.data._id)
+})
+
 }
 
 function deployContract() {
@@ -146,11 +164,11 @@ function deployContract() {
     <div className="app-container">
         <div><h2>{subtitle}</h2></div>
         <div className="app-container__main-body first-view">
-            <button onClick={stepTwo} className="app-container__button">Single NFT</button>
-            <button onClick={() => {setCollection('true'); stepTwo()}} className="app-container__button">NFT Collection</button>
+            <button onClick={stepThree} className="app-container__button">Single NFT</button>
+            <button onClick={() => {setCollection('true'); stepThree()}} className="app-container__button">NFT Collection</button>
         </div>
         <div className="app-container__main-body second-view">
-            <button onClick={() => {experience.push('VR')}} className="app-container__button">VR</button>
+            <button onClick={() => {experience.push('VR')}} className="app-container__button">3D/VR</button>
             <button onClick={() => {(experience.push('AR'))}} className="app-container__button">AR</button>
             <button onClick={() => {(experience.push('Video Content'))}} className="app-container__button">Video Content</button>
             <button onClick={() => {(experience.push('Browser Games'))}} className="app-container__button">Browser Games</button>
@@ -166,30 +184,22 @@ function deployContract() {
                 Token Symbol
                 <input id='tokenSymbol' type="text" />
             </label>
-            <label>
-                NFT/Collection Image
-                <input type="file" />
-            </label>
           </div>
           <div><button onClick={stepFour} className="app-container__button">Continue</button></div>
         </div>
         <div className="app-container__main-body fourth-view">
           <div className="input-box-container">
-            <label>
-               3D Digital Object
-              <input type="file" />
+            <label className='3d'>
+               3D Digital Asset
+              <UploadIPFS/>
             </label>
-            <label>
-               2D Digital Object
-              <input type="file" />
+            <label className='2d'>
+               2D Digital Asset
+              <UploadIPFS/>
             </label>
-            <label>
+            <label className='mp4'>
                MP4 Video File
-              <input type="file" />
-            </label>
-            <label>
-               Sound File
-              <input type="file" />
+              <UploadIPFS/>
             </label>
           </div>
           <div><button onClick={stepFive} className="app-container__button">Continue</button></div>

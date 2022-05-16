@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import HederaContract from './components/HederaContract'; 
 import NFTContract from './components/NFTContract';
+import MoralisAuth from './components/MoralisAuth';
+// import { MoralisProvider } from "react-moralis";
 
 function App() {
   return (
@@ -15,6 +17,9 @@ function App() {
           SOMETHING HERE
         </p>
         <NFTContract/>
+        {/* <MoralisProvider serverUrl="https://gfxjx7xvagdu.usemoralis.com:2053/server" appId="bb0lJNfM2uBk6sjgJm3QzybpZh6SBLH6MNcuLERk">
+          <MoralisAuth/>
+        </MoralisProvider> */}
       </header>
     </div>
   );
