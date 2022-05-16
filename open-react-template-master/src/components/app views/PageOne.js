@@ -105,7 +105,7 @@ async function tokenMinterFcn(CID) {
 const PageOne = () => {
 
 // Set State Variables
-const [subtitle, setSubtitle] = useState('Choose')
+const [subtitle, setSubtitle] = useState('')
 const [collection, setCollection] = useState('false');
 let experience = [];
 
@@ -150,6 +150,8 @@ async function stepFive() {
 .then(res => {
   console.log('The response is -->',res)
   console.log('The ID is -->', res.data._id)
+  document.querySelector('.nft-id').style.display = "none"
+  document.querySelector('.nft-id').innerHTML = res.data._id
 })
 
 }
@@ -157,6 +159,9 @@ async function stepFive() {
 function deployContract() {
   console.log('deploying!')
   mintNFT()
+  document.querySelector('.success-message').innerHTML = "Your Contract Has Been Deployed 🎉 Please Copy Your NFT ID Below & Visit Your Experiences"
+  document.querySelector('.experiences-url').innerHTML = "View Your NFT Experiences Here"
+  document.querySelector('.nft-id').style.display = "block"
 }
 
   return (
@@ -164,8 +169,7 @@ function deployContract() {
     <div className="app-container">
         <div><h2>{subtitle}</h2></div>
         <div className="app-container__main-body first-view">
-            <button onClick={stepThree} className="app-container__button">Single NFT</button>
-            <button onClick={() => {setCollection('true'); stepThree()}} className="app-container__button">NFT Collection</button>
+            <button onClick={() => {setCollection('true'); stepThree()}} className="app-container__button">Create Your Collection</button>
         </div>
         <div className="app-container__main-body second-view">
             <button onClick={() => {experience.push('VR')}} className="app-container__button">3D/VR</button>
@@ -217,6 +221,11 @@ function deployContract() {
           </div>
           <div>
             <button onClick={deployContract} className="app-container__button">Deploy NFT Smart Contract</button>
+          </div>
+          <div>
+            <div className='success-message'></div>
+            <div className='nft-id'></div>
+            <div><a className='experiences-url' href='#'></a></div>
           </div>
         </div>
     </div>
