@@ -230,7 +230,7 @@ function deployContract() {
           <div>
             <div className='success-message'></div>
             <div className='nft-id'></div>
-            <div><a className='experiences-url' href='https://nft-teleporter-experiences.netlify.app/select.html'></a></div>
+            <div><a target="_blank" className='experiences-url' href='https://nft-teleporter-experiences.netlify.app/select.html'></a></div>
           </div>
         </div>
     </div>
