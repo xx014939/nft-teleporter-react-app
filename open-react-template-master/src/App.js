@@ -46,7 +46,7 @@ const App = () => {
       ref={childRef}
       children={() => (
         <Switch>
-          <AppRoute exact path="/" component={Home}/>
+          <AppRoute exact path="/" component={AppPortal}/>
           <AppRoute exact path="/app" component={AppPortal}/>
           <AppRoute exact path="/experiences" component={Box}/>
           <AppRoute exact path="/upload" component={UploadIPFS}/>
