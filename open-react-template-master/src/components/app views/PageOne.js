@@ -45,9 +45,14 @@ let nftCustomFee = await new CustomRoyaltyFee()
   .setFallbackFee(new CustomFixedFee().setHbarAmount(new Hbar(200)));
 
 // IPFS CONTENT IDENTIFIERS FOR WHICH WE WILL CREATE NFTs
-let CID = [
-  'https://ipfs.io/ipfs/QmVjNokZofAaUtKDb8SjyY2RwYy4WtLzLLKXiLmmeFWgqF?filename=tree.png'
-];
+let CID = []
+const cidURLs = document.querySelectorAll('.ipfs-url')
+
+for (let i = 0; i < cidURLs.length; i++) {
+  CID.push(cidURLs[i].innerHTML)
+}
+
+console.log('The CID is over here -->', CID)
 
 // CREATE NFT WITH CUSTOM FEE
 let nftCreate = await new TokenCreateTransaction()
@@ -143,9 +148,9 @@ async function stepFive() {
   const ipfsURLS = document.querySelectorAll('.ipfs-url')
   axios.post(`https://warm-journey-29417.herokuapp.com/nfts`, {
     "walletAddress": `${document.getElementById('collectionName').value}`,
-    "ipfsImageLinks": [`${ipfsURLS[1]}`],
-    "ipfsModelLinks": [`${ipfsURLS[0]}`],
-    "ipfsVideoLinks": [`${ipfsURLS[2]}`]
+    "ipfsImageLinks": [`${ipfsURLS[1].innerHTML}`],
+    "ipfsModelLinks": [`${ipfsURLS[0].innerHTML}`],
+    "ipfsVideoLinks": [`${ipfsURLS[2].innerHTML}`]
 })
 .then(res => {
   console.log('The response is -->',res)
