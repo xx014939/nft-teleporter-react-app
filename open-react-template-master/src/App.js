@@ -39,7 +39,7 @@ const App = () => {
     childRef.current.init();
     trackPage(page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [location]); 
 
   return (
     <ScrollReveal
